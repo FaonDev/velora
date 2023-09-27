@@ -15,6 +15,9 @@
   "optionalDependencies": {
     "dotenv": "^16.3.1"
   },
+  "repository": {
+    "url": "https://github.com/FaonDev/velora"
+  },
   "scripts": {
     "build": "tsc",
     "test:commonjs": "node test/index.cjs",

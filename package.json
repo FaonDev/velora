@@ -10,7 +10,7 @@
     "typescript": "^5.2.2"
   },
   "license": "MIT",
-  "main": "dist",
+  "main": "dist/index.js",
   "name": "velora",
   "optionalDependencies": {
     "dotenv": "^16.3.1"
@@ -23,5 +23,6 @@
     "test:commonjs": "node test/index.cjs",
     "test:esm": "node test/index.mjs"
   },
-  "version": "14.13.0-1.0.0"
+  "types": "dist/index.d.ts",
+  "version": "14.13.0-1.0.2"
 }

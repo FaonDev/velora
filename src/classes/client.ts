@@ -1,9 +1,21 @@
-import { Client, type ClientOptions } from "discord.js";
+import {
+  type ChatInputCommandInteraction,
+  Client,
+  type ClientOptions,
+} from "discord.js";
 import type { VeloraCommand } from "./command";
 import type { VeloraEvent } from "./event";
 import { vinta } from "vinta";
 
+export type VeloraCommandHandler = (
+  interaction: ChatInputCommandInteraction,
+  command: VeloraCommand
+) => void;
+
 export type VeloraClientOptions = ClientOptions & {
+  handler?: {
+    commands?: VeloraCommandHandler;
+  };
   paths?: {
     commands?: string;
     events?: string;
@@ -11,15 +23,25 @@ export type VeloraClientOptions = ClientOptions & {
 };
 
 export class VeloraClient extends Client {
-  constructor({ paths, ...props }: VeloraClientOptions) {
+  constructor({ handler, paths, ...props }: VeloraClientOptions) {
     super(props);
 
-    if (paths?.commands) this.#addCommands(paths.commands);
+    if (paths?.commands)
+      this.#addCommands({
+        handler: handler?.commands,
+        path: paths.commands,
+      });
 
     if (paths?.events) this.#addEvents(paths.events);
   }
 
-  async #addCommands(path: string) {
+  async #addCommands({
+    handler,
+    path,
+  }: {
+    handler?: VeloraCommandHandler;
+    path: string;
+  }) {
     const { modules: commands } = await vinta<VeloraCommand>(path, {
       onlyDefault: true,
     });
@@ -34,6 +56,8 @@ export class VeloraClient extends Client {
       const command = commands.find(
         ({ name }) => name === interaction.commandName
       );
+
+      if (handler && command?.handler) return handler(interaction, command);
 
       if (command?.execute) command.execute(interaction);
       else interaction.reply("Invalid command.");

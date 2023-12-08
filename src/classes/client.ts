@@ -1,15 +1,15 @@
+import type { VeloraCommand } from "./command";
+import type { VeloraEvent } from "./event";
 import {
   type ChatInputCommandInteraction,
   Client,
   type ClientOptions,
 } from "discord.js";
-import type { VeloraCommand } from "./command";
-import type { VeloraEvent } from "./event";
 import { vinta } from "vinta";
 
 export type VeloraCommandHandler = (
   interaction: ChatInputCommandInteraction,
-  command: VeloraCommand
+  command: VeloraCommand,
 ) => void;
 
 export type VeloraClientOptions = ClientOptions & {
@@ -54,7 +54,7 @@ export class VeloraClient extends Client {
       if (!interaction.isChatInputCommand()) return;
 
       const command = commands.find(
-        ({ name }) => name === interaction.commandName
+        ({ name }) => name === interaction.commandName,
       );
 
       if (handler && command?.handler) return handler(interaction, command);

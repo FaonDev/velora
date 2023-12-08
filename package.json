@@ -7,6 +7,7 @@
   "description": "Discord.js based extensions",
   "devDependencies": {
     "@types/node": "^20.7.0",
+    "prettier": "^3.1.0",
     "typescript": "^5.2.2"
   },
   "license": "MIT",
@@ -20,9 +21,10 @@
   },
   "scripts": {
     "build": "tsc",
-    "test:commonjs": "node test/index.cjs",
-    "test:esm": "node test/index.mjs"
+    "format": "prettier -w .",
+    "test:commonjs": "node --env-file=.env.test test/index.cjs",
+    "test:esm": "node --env-file=.env.test test/index.mjs"
   },
   "types": "dist/index.d.ts",
-  "version": "14.13.0-1.0.3"
+  "version": "14.14.1-1.0.4"
 }
